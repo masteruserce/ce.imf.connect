@@ -1,0 +1,6 @@
+@ce.imf.connect_HostAddress = http://localhost:5183
+
+GET {{ce.imf.connect_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
