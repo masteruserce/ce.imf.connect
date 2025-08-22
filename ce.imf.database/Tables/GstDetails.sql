@@ -1,0 +1,14 @@
+﻿CREATE TABLE [dbo].[GstDetails] (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    ApplicationNo NVARCHAR(50) NOT NULL,
+    SourcingId UNIQUEIDENTIFIER NOT NULL,
+    Gst18 DECIMAL(18,2) NULL,
+    GstReceived DECIMAL(18,2) NULL,
+    PendingGst DECIMAL(18,2) NULL,
+    CreatedDate DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
+    CreatedBy UNIQUEIDENTIFIER NOT NULL,
+    UpdatedDate DATETIME2 NULL,
+    UpdatedBy UNIQUEIDENTIFIER NULL,
+    CONSTRAINT FK_GstDetails_Sourcing FOREIGN KEY (SourcingId) REFERENCES SourcingDetails(Id),
+    CONSTRAINT FK_GstDetails_ApplicationNo FOREIGN KEY (ApplicationNo) REFERENCES SourcingDetails(ApplicationNo)
+);

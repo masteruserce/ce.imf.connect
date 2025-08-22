@@ -1,0 +1,20 @@
+﻿CREATE TABLE [dbo].[PolicyLoginDetails] (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    ApplicationNo NVARCHAR(50) NOT NULL,
+    SourcingId UNIQUEIDENTIFIER NOT NULL,
+    PrincipalCoLoginDate DATE NULL,
+    PolicyNumber NVARCHAR(50) NULL,
+    IssueDate DATE NULL,
+    PolicyStatus NVARCHAR(50) NULL,
+    WorkFlowStatus NVARCHAR(50) NULL,
+    PlvcStatus NVARCHAR(50) NULL,
+    PaidToDate DATE NULL,
+    PlvcDescription NVARCHAR(255) NULL,
+    PolicyType NVARCHAR(50) NULL,
+    CreatedDate DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
+    CreatedBy UNIQUEIDENTIFIER NOT NULL,
+    UpdatedDate DATETIME2 NULL,
+    UpdatedBy UNIQUEIDENTIFIER NULL,
+    CONSTRAINT FK_PolicyLoginDetails_Sourcing FOREIGN KEY (SourcingId) REFERENCES SourcingDetails(Id),
+    CONSTRAINT FK_PolicyLoginDetails_ApplicationNo FOREIGN KEY (ApplicationNo) REFERENCES SourcingDetails(ApplicationNo)
+);

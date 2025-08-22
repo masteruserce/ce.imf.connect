@@ -1,6 +1,8 @@
-﻿CREATE TABLE Customer (
+﻿CREATE TABLE [dbo].[Customer] (
     Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    SourcingDetailsId UNIQUEIDENTIFIER NOT NULL, -- Foreign key to SourcingDetails table
     
+    ApplicationNo NVARCHAR(50) NOT NULL UNIQUE, -- Application reference number
     -- BaseModel fields
     CustomerNumber NVARCHAR(50) NOT NULL UNIQUE,
     ItemType NVARCHAR(100) NULL,
@@ -66,5 +68,8 @@
     AppointeePincode NVARCHAR(10)  NULL,
     AppointeeState NVARCHAR(100)  NULL,
 
-    CustomerType varchar(50)  NULL
+    CustomerType varchar(50)  NULL,
+    
+    CONSTRAINT FK_SourcingDetails_Sourcing FOREIGN KEY (SourcingDetailsId) REFERENCES SourcingDetails(Id) ON DELETE CASCADE
+    , CONSTRAINT UQ_ApplicationNo UNIQUE (ApplicationNo)
 );

@@ -1,4 +1,4 @@
-﻿CREATE TABLE SourcingDetails (
+﻿CREATE TABLE [dbo].[SourcingDetails] (
     Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
     ItemType NVARCHAR(100) NULL,
     SourceNumber NVARCHAR(50) NOT NULL UNIQUE,  -- Unique identifier for sourcing
@@ -23,4 +23,5 @@
     UpdatedDate DATETIME2 NULL DEFAULT GETDATE(),
     UpdatedBy NVARCHAR(100) NULL,
     IsActive BIT NOT NULL,
+    CONSTRAINT UQ_SourcingDetails_ApplicationNo UNIQUE (ApplicationNo)
 );

@@ -61,5 +61,16 @@
   <ItemGroup>
     <Build Include="Tables\Customer.sql" />
     <Build Include="Tables\SourcingDetails.sql" />
+    <Build Include="Tables\PlanPremiumDetails.sql" />
+    <Build Include="Tables\PolicyLoginDetails.sql" />
+    <Build Include="Tables\RevenueDetails.sql" />
+    <Build Include="Tables\BaseDetails.sql" />
+    <Build Include="Tables\FiftyBcDetails.sql" />
+    <Build Include="Tables\OtherAmountDetails.sql" />
+    <Build Include="Tables\FinalDetails.sql" />
+    <Build Include="Tables\GstDetails.sql" />
+    <Build Include="Tables\PcDetails.sql" />
+    <Build Include="Tables\TotalDetails.sql" />
+    <Build Include="Tables\PayoutDetails.sql" />
   </ItemGroup>
 </Project>

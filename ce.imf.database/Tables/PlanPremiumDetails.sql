@@ -1,0 +1,21 @@
+﻿CREATE TABLE [dbo].[PlanPremiumDetails] (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    ApplicationNo NVARCHAR(50) NOT NULL,
+    SourcingId UNIQUEIDENTIFIER NOT NULL,
+    PlanName NVARCHAR(100) NULL,
+    PaymentTerm INT NULL,
+    PaymentPayingTerm INT NULL,
+    SumAssured DECIMAL(18,2) NULL,
+    Mode NVARCHAR(50) NULL,
+    ChequeAmount DECIMAL(18,2) NULL,
+    ModelPremium DECIMAL(18,2) NULL,
+    Wrp DECIMAL(18,2) NULL,
+    Wapi DECIMAL(18,2) NULL,
+    IssuedWrp DECIMAL(18,2) NULL,
+    CreatedDate DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
+    CreatedBy UNIQUEIDENTIFIER NOT NULL,
+    UpdatedDate DATETIME2 NULL,
+    UpdatedBy UNIQUEIDENTIFIER NULL,
+    CONSTRAINT FK_PlanPremiumDetails_Sourcing FOREIGN KEY (SourcingId) REFERENCES SourcingDetails(Id),
+    CONSTRAINT FK_PlanPremiumDetails_ApplicationNo FOREIGN KEY (ApplicationNo) REFERENCES SourcingDetails(ApplicationNo)
+);
