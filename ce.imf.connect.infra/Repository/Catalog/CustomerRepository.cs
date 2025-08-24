@@ -48,8 +48,8 @@ namespace ce.imf.connect.infra.Repository.Catalog
             if (entity == null) return false;
 
             _context.Customer.Remove(entity);
-            await _context.SaveChangesAsync();
-            return true;
+            var result = await _context.SaveChangesAsync();
+            return result > 0;
         }
     }
 

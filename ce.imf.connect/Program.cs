@@ -52,10 +52,37 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super-secret-key"))
         };
     });
-builder.Services.AddScoped<ISourcingDetailsRepository, SourcingDetailsRepository>();
-builder.Services.AddScoped<ISourcingDetailsService, SourcingDetailsService>();
+builder.Services.AddScoped<IBaseDetailsRepository, BaseDetailsRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IFiftyBcDetailsRepository, FiftyBcDetailsRepository>();
+builder.Services.AddScoped<IFinalDetailsRepository, FinalDetailsRepository>();
+builder.Services.AddScoped<IGstDetailsRepository, GstDetailsRepository>();
+builder.Services.AddScoped<IInsuranceProductRepository, InsuranceProductRepository>();
+builder.Services.AddScoped<IOtherAmountDetailsRepository, OtherAmountDetailsRepository>();
+builder.Services.AddScoped<IPayoutDetailsRepository, PayoutDetailsRepository>();
+builder.Services.AddScoped<IPcDetailsRepository, PcDetailsRepository>();
+builder.Services.AddScoped<IPlanPremiumRepository, PlanPremiumRepository>(); 
+builder.Services.AddScoped<IPolicyLoginDetailsRepository, PolicyLoginDetailsRepository>();
+builder.Services.AddScoped<IRevenueDetailsRepository, RevenueDetailsRepository>();
+builder.Services.AddScoped<ISourcingDetailsRepository, SourcingDetailsRepository>();
+builder.Services.AddScoped<ITotalDetailsRepository, TotalDetailsRepository>();
+
+builder.Services.AddScoped<IBaseDetailsService, BaseDetailsService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IFiftyBcDetailsService, FiftyBcDetailsService>();
+builder.Services.AddScoped<IFinalDetailsService, FinalDetailsService>();
+builder.Services.AddScoped<IGstDetailsService, GstDetailsService>();
+builder.Services.AddScoped<IInsuranceProductService, InsuranceProductService>();
+builder.Services.AddScoped<IOtherAmountDetailsService, OtherAmountDetailsService>();
+builder.Services.AddScoped<IPayoutDetailsService, PayoutDetailsService>();
+builder.Services.AddScoped<IPcDetailsService, PcDetailsService>();
+builder.Services.AddScoped<IPlanPremiumService, PlanPremiumService>();
+builder.Services.AddScoped<IPolicyLoginDetailsService, PolicyLoginDetailsService>();
+builder.Services.AddScoped<IRevenueDetailsService, RevenueDetailsService>();
+builder.Services.AddScoped<ISourcingDetailsService, SourcingDetailsService>();
+builder.Services.AddScoped<ITotalDetailsService, TotalDetailsService>();
+
+
 builder.Services.AddAuthorization(); // Add default authorization services
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

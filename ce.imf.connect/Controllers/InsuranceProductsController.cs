@@ -1,67 +1,56 @@
-﻿using ce.imf.connect.infra;
-using ce.imf.connect.models;
+﻿using ce.imf.connect.application.Service.Abstraction;
+using ce.imf.connect.comon.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 
 namespace ce.imf.connect.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class InsuranceProductsController : ControllerBase
+    public class InsuranceProductController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IInsuranceProductService _service;
 
-        public InsuranceProductsController(AppDbContext context)
+        public InsuranceProductController(IInsuranceProductService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
         {
-            var lead = await _context.InsuranceProducts.FindAsync(id);
-            return lead == null ? NotFound() : Ok(lead);
+            var response = await _service.GetByIdAsync(id);
+            if (!response.Success) return NotFound(response);
+            return Ok(response);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await _context.InsuranceProducts.ToListAsync());
+        public async Task<IActionResult> GetAll()
+        {
+            var response = await _service.GetAllAsync();
+            return Ok(response);
+        }
 
         [HttpPost]
-        public async Task<IActionResult> Create(InsuranceProduct product)
+        public async Task<IActionResult> Add([FromBody] InsuranceProductDto dto)
         {
-            _context.InsuranceProducts.Add(product);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetAll), new { id = product.Id }, product);
+            var response = await _service.AddAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = response.Data.Id }, response);
         }
 
-        // PUT: api/insuranceProduct/{id}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, InsuranceProduct insuranceProduct)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] InsuranceProductDto dto)
         {
-            var existingInsuranceProduct = await _context.InsuranceProducts.FindAsync(id);
-            if (existingInsuranceProduct == null) return NotFound();
-
-            // Update insurance Product properties
-            existingInsuranceProduct.Term = insuranceProduct.Term;
-            existingInsuranceProduct.PaymentTerm = insuranceProduct.PaymentTerm;
-            existingInsuranceProduct.PaymentMode = insuranceProduct.PaymentMode;
-            existingInsuranceProduct.Name = insuranceProduct.Name;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            var response = await _service.UpdateAsync(dto);
+            if (!response.Success) return NotFound(response);
+            return Ok(response);
         }
 
-        // PUT: api/insuranceProduct/{id}
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var existingInsuranceProduct = await _context.InsuranceProducts.FindAsync(id);
-            if (existingInsuranceProduct == null) return NotFound();
-
-            // Set insurance Product InActive
-            existingInsuranceProduct.IsActive= false;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            var response = await _service.DeleteAsync(id);
+            if (!response.Success) return NotFound(response);
+            return Ok(response);
         }
     }
 }

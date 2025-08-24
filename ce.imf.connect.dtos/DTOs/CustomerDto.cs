@@ -12,6 +12,8 @@ namespace ce.imf.connect.comon.DTOs
 
         // BaseModel fields
         public string CustomerNumber { get; set; } = string.Empty;
+        public string SourcingId { get; set; } = string.Empty;
+        public string ApplicationNo { get; set; } = string.Empty;
         public string? ItemType { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }

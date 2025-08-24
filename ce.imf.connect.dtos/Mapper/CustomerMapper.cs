@@ -11,6 +11,8 @@ namespace ce.imf.connect.comon.Mapper
             {
                 Id = entity.Id,
                 CustomerNumber = entity.CustomerNumber,
+                ApplicationNo = entity.ApplicationNo,
+                SourcingId = entity.SourcingId,
                 ItemType = entity.ItemType,
                 CreatedDate = entity.CreatedDate,
                 UpdatedDate = entity.UpdatedDate,
@@ -76,6 +78,8 @@ namespace ce.imf.connect.comon.Mapper
             {
                 Id = dto.Id,
                 CustomerNumber = dto.CustomerNumber,
+                ApplicationNo = dto.ApplicationNo,
+                SourcingId = dto.SourcingId,
                 ItemType = dto.ItemType,
                 CreatedDate = dto.CreatedDate,
                 UpdatedDate = dto.UpdatedDate,

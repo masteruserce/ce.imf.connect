@@ -72,5 +72,6 @@
     <Build Include="Tables\PcDetails.sql" />
     <Build Include="Tables\TotalDetails.sql" />
     <Build Include="Tables\PayoutDetails.sql" />
+    <Build Include="Tables\InsuranceProduct.sql" />
   </ItemGroup>
 </Project>

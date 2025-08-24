@@ -50,6 +50,7 @@ namespace ce.imf.connect.application.Service.Catalog
         public async Task<ImfResponse<SourcingDetailsDto>> CreateAsync(SourcingDetailsDto dto)
         {
             dto.IsActive = true;
+            dto.CreatedBy = "Test";
             var entity = await _repository.AddAsync(dto.ToModel());
             return new ImfResponse<SourcingDetailsDto>(entity.ToDto(), "Record created successfully");
         }

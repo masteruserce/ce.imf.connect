@@ -1,4 +1,5 @@
 ﻿using ce.imf.connect.models;
+using ce.imf.connect.models.InsuranceApp.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ce.imf.connect.infra
@@ -7,17 +8,176 @@ namespace ce.imf.connect.infra
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        // Define Leads table (container in Cosmos DB)
+        // DbSets for all models
         public DbSet<Customer> Customer => Set<Customer>();
         public DbSet<InsuranceProduct> InsuranceProducts => Set<InsuranceProduct>();
-        public DbSet<SourcingDetails> SourcingDetails => Set<SourcingDetails>();
+        public DbSet<SourcingDetails> SourcingDetails { get; set; }
+        public DbSet<PolicyLoginDetails> PolicyLoginDetails { get; set; }
+        public DbSet<PlanPremiumDetails> PlanPremiumDetails { get; set; }
+        public DbSet<RevenueDetails> RevenueDetails { get; set; }
+        public DbSet<BaseDetails> BaseDetails { get; set; }
+        public DbSet<PcDetails> PcDetails { get; set; }
+        public DbSet<FiftyBcDetails> FiftyBcDetails { get; set; }
+        public DbSet<OtherAmountDetails> OtherAmountDetails { get; set; }
+        public DbSet<FinalDetails> FinalDetails { get; set; }
+        public DbSet<GstDetails> GstDetails { get; set; }
+        public DbSet<TotalDetails> TotalDetails { get; set; }
+        public DbSet<PayoutDetails> PayoutDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customer>().ToTable("Customer");
-            modelBuilder.Entity<InsuranceProduct>().ToTable("InsuranceProducts");
-            modelBuilder.Entity<SourcingDetails>().ToTable("SourcingDetails");
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<InsuranceProduct>().ToTable("InsuranceProduct");
+
+            modelBuilder.Entity<Customer>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasForeignKey(p => p.SourcingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Customer>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasPrincipalKey(s => s.ApplicationNo)
+                .HasForeignKey(p => p.ApplicationNo);
+            // ApplicationNo as Candidate Key for SourcingDetails
+            modelBuilder.Entity<SourcingDetails>()
+                .HasAlternateKey(s => s.ApplicationNo);
+
+            // Configure relationships (ApplicationNo + SourcingId FKs)
+
+            modelBuilder.Entity<PolicyLoginDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasForeignKey(p => p.SourcingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PolicyLoginDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasPrincipalKey(s => s.ApplicationNo)
+                .HasForeignKey(p => p.ApplicationNo);
+
+            modelBuilder.Entity<PlanPremiumDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasForeignKey(p => p.SourcingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlanPremiumDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasPrincipalKey(s => s.ApplicationNo)
+                .HasForeignKey(p => p.ApplicationNo);
+
+            modelBuilder.Entity<RevenueDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasForeignKey(r => r.SourcingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<RevenueDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasPrincipalKey(s => s.ApplicationNo)
+                .HasForeignKey(r => r.ApplicationNo);
+
+            modelBuilder.Entity<BaseDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasForeignKey(b => b.SourcingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<BaseDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasPrincipalKey(s => s.ApplicationNo)
+                .HasForeignKey(b => b.ApplicationNo);
+
+            modelBuilder.Entity<PcDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasForeignKey(p => p.SourcingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PcDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasPrincipalKey(s => s.ApplicationNo)
+                .HasForeignKey(p => p.ApplicationNo);
+
+            modelBuilder.Entity<FiftyBcDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasForeignKey(f => f.SourcingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<FiftyBcDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasPrincipalKey(s => s.ApplicationNo)
+                .HasForeignKey(f => f.ApplicationNo);
+
+            modelBuilder.Entity<OtherAmountDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasForeignKey(o => o.SourcingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OtherAmountDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasPrincipalKey(s => s.ApplicationNo)
+                .HasForeignKey(o => o.ApplicationNo);
+
+            modelBuilder.Entity<FinalDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasForeignKey(f => f.SourcingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<FinalDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasPrincipalKey(s => s.ApplicationNo)
+                .HasForeignKey(f => f.ApplicationNo);
+
+            modelBuilder.Entity<GstDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasForeignKey(g => g.SourcingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<GstDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasPrincipalKey(s => s.ApplicationNo)
+                .HasForeignKey(g => g.ApplicationNo);
+
+            modelBuilder.Entity<TotalDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasForeignKey(t => t.SourcingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TotalDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasPrincipalKey(s => s.ApplicationNo)
+                .HasForeignKey(t => t.ApplicationNo);
+
+            modelBuilder.Entity<PayoutDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasForeignKey(p => p.SourcingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PayoutDetails>()
+                .HasOne<SourcingDetails>()
+                .WithMany()
+                .HasPrincipalKey(s => s.ApplicationNo)
+                .HasForeignKey(p => p.ApplicationNo);
         }
     }
 }
