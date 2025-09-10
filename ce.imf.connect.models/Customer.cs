@@ -4,7 +4,7 @@
     {
         // Proposer Details
         public required string CustomerNumber { get; set; }
-        public required string SourcingId { get; set; }
+        public required Guid SourcingDetailsId { get; set; }
         public required string ApplicationNo { get; set; }
         public required string Proposer { get; set; }
         public required DateTime ProposerDob { get; set; }

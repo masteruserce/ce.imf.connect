@@ -66,6 +66,8 @@ builder.Services.AddScoped<IPolicyLoginDetailsRepository, PolicyLoginDetailsRepo
 builder.Services.AddScoped<IRevenueDetailsRepository, RevenueDetailsRepository>();
 builder.Services.AddScoped<ISourcingDetailsRepository, SourcingDetailsRepository>();
 builder.Services.AddScoped<ITotalDetailsRepository, TotalDetailsRepository>();
+builder.Services.AddScoped<IInsuranceCategoryRepository, InsuranceCategoryRepository>();
+builder.Services.AddScoped<IFormRepository, FormRepository>();
 
 builder.Services.AddScoped<IBaseDetailsService, BaseDetailsService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
@@ -81,6 +83,8 @@ builder.Services.AddScoped<IPolicyLoginDetailsService, PolicyLoginDetailsService
 builder.Services.AddScoped<IRevenueDetailsService, RevenueDetailsService>();
 builder.Services.AddScoped<ISourcingDetailsService, SourcingDetailsService>();
 builder.Services.AddScoped<ITotalDetailsService, TotalDetailsService>();
+builder.Services.AddScoped<IInsuranceCategoryService, InsuranceCategoryService>();
+builder.Services.AddScoped<IFormService, FormService>();
 
 
 builder.Services.AddAuthorization(); // Add default authorization services

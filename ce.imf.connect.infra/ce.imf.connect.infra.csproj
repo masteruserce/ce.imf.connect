@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ce.imf.connect.dtos\ce.imf.connect.comon.csproj" />
     <ProjectReference Include="..\ce.imf.connect.models\ce.imf.connect.models.csproj" />
   </ItemGroup>
 

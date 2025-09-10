@@ -57,21 +57,31 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="PostDeploymentScript" />
+    <Folder Include="archived" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\Customer.sql" />
-    <Build Include="Tables\SourcingDetails.sql" />
-    <Build Include="Tables\PlanPremiumDetails.sql" />
-    <Build Include="Tables\PolicyLoginDetails.sql" />
-    <Build Include="Tables\RevenueDetails.sql" />
-    <Build Include="Tables\BaseDetails.sql" />
-    <Build Include="Tables\FiftyBcDetails.sql" />
-    <Build Include="Tables\OtherAmountDetails.sql" />
-    <Build Include="Tables\FinalDetails.sql" />
-    <Build Include="Tables\GstDetails.sql" />
-    <Build Include="Tables\PcDetails.sql" />
-    <Build Include="Tables\TotalDetails.sql" />
-    <Build Include="Tables\PayoutDetails.sql" />
-    <Build Include="Tables\InsuranceProduct.sql" />
+    <Build Include="Tables\FieldsConfig.sql" />
+    <Build Include="Tables\Clients.sql" />
+    <Build Include="Tables\Forms.sql" />
+    <Build Include="Tables\Sections.sql" />
+    <Build Include="archived\BaseDetails.sql" />
+    <Build Include="archived\Customer.sql" />
+    <Build Include="archived\FiftyBcDetails.sql" />
+    <Build Include="archived\GstDetails.sql" />
+    <Build Include="archived\InsuranceCategory.sql" />
+    <Build Include="archived\InsuranceProduct.sql" />
+    <Build Include="archived\OtherAmountDetails.sql" />
+    <Build Include="archived\PayoutDetails.sql" />
+    <Build Include="archived\PcDetails.sql" />
+    <Build Include="archived\PlanPremiumDetails.sql" />
+    <Build Include="archived\PolicyLoginDetails.sql" />
+    <Build Include="archived\RevenueDetails.sql" />
+    <Build Include="archived\TotalDetails.sql" />
+    <Build Include="archived\FinalDetails.sql" />
+    <Build Include="archived\SourcingDetails.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="PostDeploymentScript\Script.PostDeploym.InsuranceCategory.sql" />
   </ItemGroup>
 </Project>
