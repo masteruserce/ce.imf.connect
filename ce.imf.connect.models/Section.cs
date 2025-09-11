@@ -9,7 +9,7 @@
         public int DisplayOrder { get; set; } = 0;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public Form? Form { get; set; }
-        public Client? Client { get; set; }
+        public Clients? Client { get; set; }
         public ICollection<FieldConfig> Fields { get; set; } = new List<FieldConfig>();
     }
 }

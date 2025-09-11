@@ -28,10 +28,11 @@ namespace ce.imf.connect.infra
         public DbSet<Clients> Clients { get; set; }
         public DbSet<Form> Forms { get; set; }
         public DbSet<Section> sections { get; set; }
+        public DbSet<FormDataValue> FormDataValues { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<Clients>().ToTable("Clients").HasKey(e=>e.ClientId);
             modelBuilder.Entity<InsuranceProduct>().ToTable("InsuranceProduct");
             modelBuilder.Entity<InsuranceCategory>().ToTable("InsuranceCategory").HasKey(e=>e.CategoryId);
             modelBuilder.Entity<Customer>().ToTable("Customer").HasKey( e=>e.Id);

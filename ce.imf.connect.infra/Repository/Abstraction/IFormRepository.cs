@@ -13,6 +13,8 @@ namespace ce.imf.connect.infra.Repository.Abstraction
         Task<IEnumerable<Section>> UpdateSectionsAsync(IEnumerable<Section> sections);
 
         Task<IEnumerable<FieldConfig>> UpdateFieldConfigsAsync(IEnumerable<FieldConfig> fields);
-        // update/delete etc. as needed
+        Task<List<Form>> GetFormByClientIdAsync(Guid? clientId);
+        Task<Form?> GetFormIncludingEntities(Guid? clientId, string formName);
+        Task SaveChangesAsync();
     }
 }

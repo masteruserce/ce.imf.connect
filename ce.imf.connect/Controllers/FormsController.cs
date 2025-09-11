@@ -27,5 +27,13 @@ namespace ce.imf.connect.Controllers
             if (!res.Success) return BadRequest(res);
             return Ok(res);
         }
+
+        [HttpGet("{clientId:guid}/")]
+        public async Task<IActionResult> Get(Guid clientId)
+        {
+            var res = await _service.GetFormsByClientIdAsync(clientId);
+            if (!res.Success) return BadRequest(res);
+            return Ok(res);
+        }
     }
 }

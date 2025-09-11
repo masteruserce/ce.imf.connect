@@ -13,6 +13,7 @@ namespace ce.imf.connect.comon.DTOs
         public string? Description { get; set; }
         public string? LogoBase64 { get; set; }
         public string UserName { get; set; } = string.Empty;
+        public string UserPassword { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
@@ -20,5 +21,6 @@ namespace ce.imf.connect.comon.DTOs
         public string State { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
         public string ZipCode { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
     }
 }

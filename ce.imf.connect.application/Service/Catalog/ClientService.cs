@@ -2,6 +2,8 @@
 using ce.imf.connect.comon.DTOs;
 using ce.imf.connect.infra.Repository.Abstraction;
 using ce.imf.connect.common.Mapper;
+using ce.imf.connect.comon.Helper;
+using System.Net;
 
 namespace ce.imf.connect.application.Service.Catalog
 {
@@ -32,7 +34,15 @@ namespace ce.imf.connect.application.Service.Catalog
 
         public async Task<ImfResponse<ClientDto>> AddAsync(ClientDto dto)
         {
+            if (await _repo.IfUserNameExists(dto.UserName))
+            {
+               return new ImfResponse<ClientDto>(
+                    new List<ImfErrors> { new ImfErrors { Code = HttpStatusCode.BadRequest.ToString(), Details = $"User Name {dto.UserName} is already taken, please choose a different user name", Trace = "" } });
+              
+            }
+            dto.IsActive = true;
             var entity = dto.ToEntity();
+            entity.UserPassword = entity.UserPassword.HashPassword();
             var created = await _repo.AddAsync(entity);
             return new ImfResponse<ClientDto>(created.ToDto(), "Client created successfully");
         }

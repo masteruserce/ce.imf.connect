@@ -16,5 +16,7 @@ namespace ce.imf.connect.infra.Repository.Abstraction
         Task<Clients> DeativateAsync(Guid clientId);
         Task<Clients> ActivateAsync(Guid clientId);
         Task DeleteAsync(Guid clientId);
+        Task<bool> IfUserNameExists(string userName);
+        Task<Clients?> GetByUsernameAsync(string userName);
     }
 }

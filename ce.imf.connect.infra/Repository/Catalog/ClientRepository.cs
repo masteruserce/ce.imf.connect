@@ -70,5 +70,16 @@ namespace ce.imf.connect.infra.Repository.Catalog
             }
             return client;
         }
+
+        public async Task<bool> IfUserNameExists(string userName)
+        {
+            var result = await _db.Clients.FirstOrDefaultAsync(x => x.UserName == userName);
+            return null != result;
+        }
+
+        public async Task<Clients?> GetByUsernameAsync(string userName)
+        {
+            return await _db.Clients.FirstOrDefaultAsync(x => x.UserName == userName);
+        }
     }
 }

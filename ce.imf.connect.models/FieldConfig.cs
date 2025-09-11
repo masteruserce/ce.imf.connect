@@ -22,6 +22,6 @@ namespace ce.imf.connect.models
         public string? DefaultValue { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public Section? Section { get; set; }
-        public Client? Client { get; set; }
+        public Clients? Client { get; set; }
     }
 }

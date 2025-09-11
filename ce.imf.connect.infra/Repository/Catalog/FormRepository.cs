@@ -65,5 +65,22 @@ namespace ce.imf.connect.infra.Repository.Catalog
             await _db.SaveChangesAsync();
             return fields;
         }
+
+        public async Task<List<Form>> GetFormByClientIdAsync(Guid? clientId)
+        {
+            return await _db.Forms.Where(x => x.ClientId == clientId).ToListAsync();
+        }
+
+        public async Task<Form?> GetFormIncludingEntities(Guid? clientId, string formName)
+        {
+           return await _db.Forms
+                .Include(f => f.Sections)
+                .ThenInclude(s => s.Fields)
+                .FirstOrDefaultAsync(f => f.ClientId == clientId && f.FormName == formName);
+        }
+        public async Task SaveChangesAsync()
+        {
+            await _db.SaveChangesAsync();
+        }
     }
 }

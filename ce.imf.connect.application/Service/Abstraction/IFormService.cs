@@ -5,5 +5,6 @@ namespace ce.imf.connect.infra.Repository.Abstraction
     {
         Task<ImfResponse<FormDto>> GetFormAsync(Guid? clientId, string formName);
         Task<ImfResponse<FormDto>> ImportFormAsync(ImportFieldsRequest request);
+        Task<ImfResponse<List<FormDto>>> GetFormsByClientIdAsync(Guid? clientId);
     }
 }

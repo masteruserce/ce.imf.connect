@@ -40,6 +40,27 @@ namespace ce.imf.connect.application.Service.Catalog
             }
         }
 
+        public async Task<ImfResponse<List<FormDto>>> GetFormsByClientIdAsync(Guid? clientId)
+        {
+            var forms = await _repo.GetFormByClientIdAsync(clientId);
+            var formDtos = forms.Select(form => new FormDto
+            {
+                Id = form.Id,
+                ClientId = form.ClientId,
+                FormName = form.FormName,
+                Sections = form.Sections.OrderBy(s => s.DisplayOrder).Select(s => new SectionDto
+                {
+                    Id = s.Id,
+                    ClientId = s.ClientId,
+                    FormId = s.FormId,
+                    SectionName = s.SectionName,
+                    DisplayOrder = s.DisplayOrder,
+                    Fields = s.Fields.OrderBy(f => f.FieldOrder).Select(f => f.ToDto()).ToList()
+                }).ToList()
+            }).ToList();
+            return new ImfResponse<List<FormDto>>(formDtos, "OK");
+        }
+
         public async Task<ImfResponse<FormDto>> ImportFormAsync(ImportFieldsRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.FormName))
@@ -127,6 +148,7 @@ namespace ce.imf.connect.application.Service.Catalog
             };
             return new ImfResponse<FormDto>(dto, "Form imported successfully.");
         }
+
         private async Task<ImfResponse<FormDto>> UpdateFormAsync(Guid clientId, string formName, FormDto formDto)
         {
             var existingForm = await _repo.GetFormWithSectionsAsync(clientId, formName);
@@ -226,20 +248,20 @@ namespace ce.imf.connect.application.Service.Catalog
             // Save updates
             var updated = await _repo.UpdateAsync(existingForm);
 
-            var form = new FormDto 
+            var form = new FormDto
             {
-            ClientId= updated.ClientId,
-            FormName = updated.FormName,
-            Id = updated.Id,
-            Sections =  updated.Sections.OrderBy(s => s.DisplayOrder).Select(s => new SectionDto
-            {
-                Id = s.Id,
-                ClientId = s.ClientId,
-                FormId = s.FormId,
-                SectionName = s.SectionName,
-                DisplayOrder = s.DisplayOrder,
-                Fields = s.Fields.OrderBy(f => f.FieldOrder).Select(f => f.ToDto()).ToList()
-            }).ToList()
+                ClientId = updated.ClientId,
+                FormName = updated.FormName,
+                Id = updated.Id,
+                Sections = updated.Sections.OrderBy(s => s.DisplayOrder).Select(s => new SectionDto
+                {
+                    Id = s.Id,
+                    ClientId = s.ClientId,
+                    FormId = s.FormId,
+                    SectionName = s.SectionName,
+                    DisplayOrder = s.DisplayOrder,
+                    Fields = s.Fields.OrderBy(f => f.FieldOrder).Select(f => f.ToDto()).ToList()
+                }).ToList()
             };
 
             return new ImfResponse<FormDto>(form, "Form updated successfully");

@@ -80,6 +80,7 @@
     <Build Include="archived\TotalDetails.sql" />
     <Build Include="archived\FinalDetails.sql" />
     <Build Include="archived\SourcingDetails.sql" />
+    <Build Include="Tables\FormDataValues.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploymentScript\Script.PostDeploym.InsuranceCategory.sql" />

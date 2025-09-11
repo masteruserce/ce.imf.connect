@@ -20,7 +20,8 @@ namespace ce.imf.connect.common.Mapper
                 City = entity.City,
                 State = entity.State,
                 Country = entity.Country,
-                ZipCode = entity.ZipCode
+                ZipCode = entity.ZipCode,
+                IsActive = entity.IsActive
             };
         }
 
@@ -33,13 +34,15 @@ namespace ce.imf.connect.common.Mapper
                 Description = dto.Description,
                 LogoBase64 = dto.LogoBase64,
                 UserName = dto.UserName,
+                UserPassword = dto.UserPassword,
                 Email = dto.Email,
                 Phone = dto.Phone,
                 Address = dto.Address,
                 City = dto.City,
                 State = dto.State,
                 Country = dto.Country,
-                ZipCode = dto.ZipCode
+                ZipCode = dto.ZipCode,
+                IsActive = dto.IsActive
             };
         }
 
@@ -49,6 +52,11 @@ namespace ce.imf.connect.common.Mapper
             entity.Description = dto.Description;
             entity.LogoBase64 = dto.LogoBase64;
             entity.UserName = dto.UserName;
+            // Only update the password if it's provided
+            if (!string.IsNullOrWhiteSpace(dto.UserPassword))
+            {
+                entity.UserPassword = dto.UserPassword;
+            }
             entity.Email = dto.Email;
             entity.Phone = dto.Phone;
             entity.Address = dto.Address;
@@ -56,6 +64,7 @@ namespace ce.imf.connect.common.Mapper
             entity.State = dto.State;
             entity.Country = dto.Country;
             entity.ZipCode = dto.ZipCode;
+            entity.IsActive = dto.IsActive;
         }
     }
 }
