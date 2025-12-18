@@ -5,7 +5,7 @@ using ce.imf.connect.common.Helpers;
 using ce.imf.connect.infra;
 using ce.imf.connect.infra.Repository.Abstraction;
 using ce.imf.connect.infra.Repository.Catalog;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using ce.imf.connect.models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -43,44 +43,28 @@ builder.Services.AddCors(options =>
 });
 
 
-builder.Services.AddScoped<IBaseDetailsRepository, BaseDetailsRepository>();
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
-builder.Services.AddScoped<IFiftyBcDetailsRepository, FiftyBcDetailsRepository>();
-builder.Services.AddScoped<IFinalDetailsRepository, FinalDetailsRepository>();
-builder.Services.AddScoped<IGstDetailsRepository, GstDetailsRepository>();
-builder.Services.AddScoped<IInsuranceProductRepository, InsuranceProductRepository>();
-builder.Services.AddScoped<IOtherAmountDetailsRepository, OtherAmountDetailsRepository>();
-builder.Services.AddScoped<IPayoutDetailsRepository, PayoutDetailsRepository>();
-builder.Services.AddScoped<IPcDetailsRepository, PcDetailsRepository>();
-builder.Services.AddScoped<IPlanPremiumRepository, PlanPremiumRepository>(); 
-builder.Services.AddScoped<IPolicyLoginDetailsRepository, PolicyLoginDetailsRepository>();
-builder.Services.AddScoped<IRevenueDetailsRepository, RevenueDetailsRepository>();
-builder.Services.AddScoped<ISourcingDetailsRepository, SourcingDetailsRepository>();
-builder.Services.AddScoped<ITotalDetailsRepository, TotalDetailsRepository>();
-builder.Services.AddScoped<IInsuranceCategoryRepository, InsuranceCategoryRepository>();
 builder.Services.AddScoped<IFormRepository, FormRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IFormDataValueRepository, FormDataValueRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPostalCodeRepository, PostCodeRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+//builder.Services.AddScoped<IGenericRepository<AutoInsuranceFormDataValues>, IGenericRepository<AutoInsuranceFormDataValues>>();
+//builder.Services.AddScoped<IGenericRepository<LifeInsuranceFormDataValues>, IGenericRepository<LifeInsuranceFormDataValues>>();
+//builder.Services.AddScoped<IGenericRepository<CropInsuranceFormDataValues>, IGenericRepository<CropInsuranceFormDataValues>>();
+//builder.Services.AddScoped<IGenericRepository<CommercialInsuranceFormDataValues>, IGenericRepository<CommercialInsuranceFormDataValues>>();
+//builder.Services.AddScoped<IGenericRepository<TravelInsuranceFormDataValues>, IGenericRepository<TravelInsuranceFormDataValues>>();
+//builder.Services.AddScoped<IGenericRepository<PropertyInsuranceFormDataValues>, IGenericRepository<PropertyInsuranceFormDataValues>>();
+//builder.Services.AddScoped<IGenericRepository<HealthInsuranceFormDataValues>, IGenericRepository<HealthInsuranceFormDataValues>>();
+//builder.Services.AddScoped<IGenericRepository<MarineInsuranceFormDataValues>, IGenericRepository<MarineInsuranceFormDataValues>>();
 
-builder.Services.AddScoped<IBaseDetailsService, BaseDetailsService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddScoped<IFiftyBcDetailsService, FiftyBcDetailsService>();
-builder.Services.AddScoped<IFinalDetailsService, FinalDetailsService>();
-builder.Services.AddScoped<IGstDetailsService, GstDetailsService>();
-builder.Services.AddScoped<IInsuranceProductService, InsuranceProductService>();
-builder.Services.AddScoped<IOtherAmountDetailsService, OtherAmountDetailsService>();
-builder.Services.AddScoped<IPayoutDetailsService, PayoutDetailsService>();
-builder.Services.AddScoped<IPcDetailsService, PcDetailsService>();
-builder.Services.AddScoped<IPlanPremiumService, PlanPremiumService>();
-builder.Services.AddScoped<IPolicyLoginDetailsService, PolicyLoginDetailsService>();
-builder.Services.AddScoped<IRevenueDetailsService, RevenueDetailsService>();
-builder.Services.AddScoped<ISourcingDetailsService, SourcingDetailsService>();
-builder.Services.AddScoped<ITotalDetailsService, TotalDetailsService>();
-builder.Services.AddScoped<IInsuranceCategoryService, InsuranceCategoryService>();
 builder.Services.AddScoped<IFormService, FormService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IFormDataValueService, FormDataValueService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPostalCodeService, PostalCodeService>();
+
 builder.Services.AddAuthorization(); // Add default authorization services
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<JwtHelper>();

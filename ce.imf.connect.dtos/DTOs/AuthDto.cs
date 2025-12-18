@@ -17,5 +17,7 @@ namespace ce.imf.connect.comon.DTOs
         public Guid ClientId { get; set; }
         public string Token { get; set; } = string.Empty;
         public DateTime Expiry { get; set; }
+        public string UserType { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
     }
 }

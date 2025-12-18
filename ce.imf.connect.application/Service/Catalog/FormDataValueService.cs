@@ -1,16 +1,67 @@
-﻿using ce.imf.connect.application.Service.Abstraction;
+﻿using Azure;
+using ce.imf.connect.application.Service.Abstraction;
 using ce.imf.connect.common.DTOs;
 using ce.imf.connect.comon.DTOs;
 using ce.imf.connect.comon.Mapper;
 using ce.imf.connect.infra.Repository.Abstraction;
+using ce.imf.connect.models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Reflection.PortableExecutable;
 
 namespace ce.imf.connect.application.Service.Catalog
 {
     public class FormDataValueService : IFormDataValueService
     {
         private readonly IFormDataValueRepository _repo;
-        public FormDataValueService(IFormDataValueRepository repo) => _repo = repo;
+        private readonly IFormRepository _formRepository;
+        private readonly IGenericRepository<AutoInsuranceFormDataValues> _autoRepo;
+        private readonly IGenericRepository<LifeInsuranceFormDataValues> _lifeRepo;
+        private readonly IGenericRepository<HealthInsuranceFormDataValues> _healthRepo;
+        private readonly IGenericRepository<PropertyInsuranceFormDataValues> _propRepo;
+        private readonly IGenericRepository<CropInsuranceFormDataValues> _cropRepo;
+        private readonly IGenericRepository<CommercialInsuranceFormDataValues> _commRepo;
+        private readonly IGenericRepository<TravelInsuranceFormDataValues> _travlRepo;
+        private readonly IGenericRepository<MarineInsuranceFormDataValues> _marineRepo;
+        private readonly IGenericRepository<FieldConfig> _fieldConfigRepo;
+        private readonly IGenericRepository<Section> _sectionRepo;
 
+        public FormDataValueService(IFormDataValueRepository repo, IFormRepository formRepository,
+            IGenericRepository<AutoInsuranceFormDataValues> autoRepo,
+            IGenericRepository<LifeInsuranceFormDataValues> lifeRepo,
+        IGenericRepository<HealthInsuranceFormDataValues> healthRepo,
+        IGenericRepository<PropertyInsuranceFormDataValues> propRepo,
+        IGenericRepository<CropInsuranceFormDataValues> cropRepo,
+        IGenericRepository<CommercialInsuranceFormDataValues> commRepo,
+        IGenericRepository<TravelInsuranceFormDataValues> travlRepo,
+        IGenericRepository<MarineInsuranceFormDataValues> marineRepo,
+        IGenericRepository<FieldConfig> fieldConfigRepo,
+        IGenericRepository<Section> sectionRepo
+            )
+        {
+            _repo = repo;
+            _formRepository = formRepository;
+            _autoRepo = autoRepo;
+            _lifeRepo = lifeRepo;
+            _healthRepo = healthRepo;
+            _propRepo = propRepo;
+            _cropRepo = cropRepo;
+            _commRepo = commRepo;
+            _travlRepo = travlRepo;
+            _marineRepo = marineRepo;
+            _fieldConfigRepo = fieldConfigRepo;
+            _sectionRepo = sectionRepo;
+        }
+
+        public async Task<ImfResponse<List<FormDataValueDto>>> SaveRangeAsync(List<FormDataValueDto> dto)
+        {
+
+            var form = await _formRepository.GetFormById(dto[0].FormId);
+
+            return await SaveFormDataAsync(dto, form!.FormName);
+        }
         public async Task<ImfResponse<FormDataValueDto>> SaveAsync(FormDataValueDto dto)
         {
             var entity = dto.ToEntity();
@@ -41,11 +92,314 @@ namespace ce.imf.connect.application.Service.Catalog
             return new ImfResponse<bool>(true, "Deactivated successfully");
         }
 
-        public async Task<ImfResponse<IEnumerable<FormDataValueDto>>> GetByFormAsync(Guid formId, Guid? clientId)
+        public async Task<ImfResponse<List<FormDataValueDto>>> GetByFormAsync(Guid formId, Guid? clientId)
         {
-            var values = await _repo.GetByFormAsync(formId, clientId);
-            return new ImfResponse<IEnumerable<FormDataValueDto>>(values.Select(v => v.ToDto()), "Fetched successfully");
+            return await GetFormDataAsync(formId, clientId);
+        }
+
+        private async Task<ImfResponse<List<FormDataValueDto>>> SaveFormDataAsync(List<FormDataValueDto> dto, string formName)
+        {
+            var response = new ImfResponse<List<FormDataValueDto>>();
+            switch (formName)
+            {
+                case "Auto Insurance":
+                    var autoForm = dto.Select(s => s.ToAutoEntity()).ToList();
+                    var auto = await _autoRepo.AddRangeAsync(autoForm);
+                    response.Data = [.. auto.Select(s => s.AutoToDto())];
+                    response.Message = "Auto Insurance saved successfully";
+                    break;
+                case "Commercial Insurance":
+                    var commercianForm = dto.Select(s => s.CommToEntity()).ToList();
+                    var comm = await _commRepo.AddRangeAsync(commercianForm);
+                    response.Data = [.. comm.Select(s => s.CommToDto())];
+                    response.Message = "Commercial Insurance saved successfully";
+                    break;
+                case "Life Insurance":
+                    var lifeForm = dto.Select(s => s.LifeToEntity()).ToList();
+                    var life = await _lifeRepo.AddRangeAsync(lifeForm);
+                    response.Data = [.. life.Select(s => s.LifeToDto())];
+                    response.Message = "Life Insurance saved successfully";
+                    break;
+                case "Crop Insurance":
+                    var cropForm = dto.Select(s => s.CropToEntity()).ToList();
+                    var crop = await _cropRepo.AddRangeAsync(cropForm);
+                    response.Data = [.. crop.Select(s => s.CropToDto())];
+                    response.Message = "Crop Insurance saved successfully";
+                    break;
+                case "Property Insurance":
+                    var propForm = dto.Select(s => s.PropertyToEntity()).ToList();
+                    var prop = await _propRepo.AddRangeAsync(propForm);
+                    response.Data = [.. prop.Select(s => s.PropertyToDto())];
+                    response.Message = "Property Insurance saved successfully";
+                    break;
+                case "Travel Insurance":
+                    var traveForm = dto.Select(s => s.TravelToEntity()).ToList();
+                    var travel = await _travlRepo.AddRangeAsync(traveForm);
+                    response.Data = [.. travel.Select(s => s.TravelToDto())];
+                    response.Message = "Travel Insurance saved successfully";
+                    break;
+                case "Health Insurance":
+                    var healthForm = dto.Select(s => s.HealthToEntity()).ToList();
+                    var health = await _healthRepo.AddRangeAsync(healthForm);
+                    response.Data = [.. health.Select(s => s.HealthToDto())];
+                    response.Message = "Health Insurance saved successfully";
+                    break;
+                case "Marine Insurance":
+                    var marineForm = dto.Select(s => s.MarineToEntity()).ToList();
+                    var marine = await _marineRepo.AddRangeAsync(marineForm);
+                    response.Data = [.. marine.Select(s => s.MarineToDto())];
+                    response.Message = "Marine Insurance saved successfully";
+                    break;
+                default:
+                    break;
+            }
+            return response;
+        }
+
+        private async Task<ImfResponse<List<FormDataValueDto>>> GetFormDataAsync(Guid formId, Guid? clientId)
+        {
+            var response = new ImfResponse<List<FormDataValueDto>>();
+            var form = await _formRepository.GetFormById(formId);
+            switch (form!.FormName)
+            {
+                case "Auto Insurance":
+                    var auto = await _autoRepo.FindAsync(x => x.FormId == formId && x.ClientId == clientId);
+                    response.Data = [.. auto.Select(s => s.AutoToDto())];
+                    response.Message = "Fetched Auto Insurance data successfully";
+                    break;
+                case "Commercial Insurance":
+                    var comm = await _commRepo.FindAsync(x => x.FormId == formId && x.ClientId == clientId);
+                    response.Data = [.. comm.Select(s => s.CommToDto())];
+                    response.Message = "Fetched Commercial Insurance data successfully";
+                    break;
+                case "Life Insurance":
+                    var life = await _lifeRepo.FindAsync(x => x.FormId == formId && x.ClientId == clientId);
+                    response.Data = [.. life.Select(s => s.LifeToDto())];
+                    response.Message = "Fetched Life Insurance data successfully";
+                    break;
+                case "Crop Insurance":
+                    var crop = await _cropRepo.FindAsync(x => x.FormId == formId && x.ClientId == clientId);
+                    response.Data = [.. crop.Select(s => s.CropToDto())];
+                    response.Message = "Fetched Crop Insurance data successfully";
+                    break;
+                case "Property Insurance":
+                    var prop = await _propRepo.FindAsync(x => x.FormId == formId && x.ClientId == clientId);
+                    response.Data = [.. prop.Select(s => s.PropertyToDto())];
+                    response.Message = "Fetched Property Insurance data successfully";
+                    break;
+                case "Travel Insurance":
+                    var travel = await _travlRepo.FindAsync(x => x.FormId == formId && x.ClientId == clientId);
+                    response.Data = [.. travel.Select(s => s.TravelToDto())];
+                    response.Message = "Fetched Travel Insurance data successfully";
+                    break;
+                case "Health Insurance":
+                    var health = await _healthRepo.FindAsync(x => x.FormId == formId && x.ClientId == clientId);
+                    response.Data = [.. health.Select(s => s.HealthToDto())];
+                    response.Message = "Fetched Health Insurance data successfully";
+                    break;
+                case "Marine Insurance":
+                    var marine = await _marineRepo.FindAsync(x => x.FormId == formId && x.ClientId == clientId);
+                    response.Data = [.. marine.Select(s => s.MarineToDto())];
+                    response.Message = "Fetched Marine Insurance data successfully";
+                    break;
+                default:
+                    break;
+            }
+            return response;
+        }
+
+        public async Task<PaginatedResult<FormDataValueReadResponseDto>> GetByFormPagedAsync(
+           Guid formId,
+           Guid? clientId,
+           int pageNumber,
+           int pageSize,
+           bool ascending = true,
+           CancellationToken cancellationToken = default)
+        {
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1) pageSize = 10;
+
+            var form = await _formRepository.GetFormById(formId);
+            if (form is null)
+                throw new ArgumentException($"Form with id {formId} not found.", nameof(formId));
+
+            // Generic helper: map and enrich using only repositories (no DbContext)
+            async Task<PaginatedResult<FormDataValueReadResponseDto>> MapAndEnrichAsync<TSource>(
+                PaginatedResult<TSource> src,
+                Func<TSource, FormDataValueReadResponseDto> converter,
+                Guid theFormId,
+                CancellationToken ct)
+            {
+                var converted = src.Items?.Select(converter).ToList() ?? new List<FormDataValueReadResponseDto>();
+
+                // Distinct ids for bulk repo fetches
+                var distinctFieldIds = converted.Where(x => x.FormId == formId && x.ClientId == clientId).Select(x => x.FieldId).Distinct().ToList();
+                var distinctSectionIds = converted.Where(x => x.FormId == formId && x.ClientId == clientId).Select(x => x.SectionId).Distinct().ToList();
+
+                // Fetch FieldConfigs & Sections via repositories
+                IEnumerable<FieldConfig> fieldConfigs = Enumerable.Empty<FieldConfig>();
+                if (distinctFieldIds.Any())
+                {
+                    // Build predicate: fc => distinctFieldIds.Contains(fc.Id)
+                    Expression<Func<FieldConfig, bool>> fcPredicate = fc => distinctFieldIds.Contains(fc.Id);
+                    fieldConfigs = await _fieldConfigRepo.FindAsync(fcPredicate);
+                }
+
+                IEnumerable<Section> sections = Enumerable.Empty<Section>();
+                if (distinctSectionIds.Any())
+                {
+                    Expression<Func<Section, bool>> sPredicate = s => distinctSectionIds.Contains(s.Id);
+                    sections = await _sectionRepo.FindAsync(sPredicate);
+                }
+
+                // Convert to dictionaries for fast lookup
+                var fieldLookup = fieldConfigs.ToDictionary(fc => fc.Id, fc => fc.Label);
+                var sectionLookup = sections.ToDictionary(s => s.Id, s => s.SectionName ?? string.Empty);
+                var formName = form.FormName;
+
+                // Enrich DTOs
+                foreach (var item in converted)
+                {
+                    item.FieldName = item.FieldId != Guid.Empty && fieldLookup.TryGetValue(item.FieldId, out var fn) ? fn : null;
+                    item.SectionName = item.SectionId != Guid.Empty && sectionLookup.TryGetValue(item.SectionId, out var sn) ? sn : null;
+                    item.FormName = formName;
+                }
+
+                return new PaginatedResult<FormDataValueReadResponseDto>
+                {
+                    Items = converted,
+                    TotalCount = src.TotalCount,
+                    PageNumber = src.PageNumber,
+                    PageSize = src.PageSize,
+                    TotalPages = src.TotalPages
+                };
+            }
+
+            // Helper to build the predicate safely per-type (avoid client-side OR)
+            static Expression<Func<T, bool>> BuildPredicate<T>(Guid fid, Guid? cid)
+            {
+                if (cid.HasValue)
+                {
+                    var cval = cid.Value;
+                    return (T e) => EF.Property<Guid>(e, nameof(FormDataValue.FormId)) == fid
+                        && EF.Property<Guid?>(e, nameof(FormDataValue.ClientId)) == cval;
+                }
+                else
+                {
+                    return (T e) => EF.Property<Guid>(e, nameof(FormDataValue.FormId)) == fid;
+                }
+            }
+
+            var formNameTrim = (form.FormName ?? string.Empty).Trim();
+
+            switch (formNameTrim.ToLowerInvariant())
+            {
+                case "auto insurance":
+                    {
+                        // Build predicate explicitly
+                        Expression<Func<AutoInsuranceFormDataValues, bool>> predicate;
+                        if (clientId.HasValue) { var cid = clientId.Value; predicate = f => f.FormId == formId && f.ClientId == cid; }
+                        else predicate = f => f.FormId == formId;
+
+                        // Use DateTime? order expression for EF translation
+                        Expression<Func<AutoInsuranceFormDataValues, DateTime>>? orderBy = f => f.UpdatedAt ?? f.CreatedAt;
+
+                        var paged = await _autoRepo.GetPagedAsync(predicate, pageNumber, pageSize, orderBy, ascending, cancellationToken)
+                                                   .ConfigureAwait(false);
+
+                        FormDataValueReadResponseDto Conv(AutoInsuranceFormDataValues e) => new FormDataValueReadResponseDto
+                        {
+                            Id = e.Id,
+                            TransactionId = e.TransactionId?.ToString(),
+                            ClientId = e.ClientId,
+                            FormId = e.FormId,
+                            SectionId = e.SectionId,
+                            FieldId = e.FieldId,
+                            DataValue = e.DataValue,
+                            Active = e.Active,
+                            IsDraft = e.IsDraft,
+                            CreatedAt = e.CreatedAt,
+                            UpdatedAt = e.UpdatedAt,
+                            CreatedBy = e.CreatedBy,
+                            UpdatedBy = e.UpdatedBy
+                        };
+
+                        return await MapAndEnrichAsync(paged, Conv, formId, cancellationToken).ConfigureAwait(false);
+                    }
+
+                case "commercial insurance":
+                    {
+                        Expression<Func<CommercialInsuranceFormDataValues, bool>> predicate;
+                        if (clientId.HasValue) { var cid = clientId.Value; predicate = f => f.FormId == formId && f.ClientId == cid; }
+                        else predicate = f => f.FormId == formId;
+
+                        Expression<Func<CommercialInsuranceFormDataValues, DateTime>>? orderBy = f => f.UpdatedAt ?? f.CreatedAt;
+
+                        var paged = await _commRepo.GetPagedAsync(predicate, pageNumber, pageSize, orderBy, ascending, cancellationToken)
+                                                   .ConfigureAwait(false);
+
+                        FormDataValueReadResponseDto Conv(CommercialInsuranceFormDataValues e) => new FormDataValueReadResponseDto
+                        {
+                            Id = e.Id,
+                            TransactionId = e.TransactionId?.ToString(),
+                            ClientId = e.ClientId,
+                            FormId = e.FormId,
+                            SectionId = e.SectionId,
+                            FieldId = e.FieldId,
+                            DataValue = e.DataValue,
+                            Active = e.Active,
+                            IsDraft = e.IsDraft,
+                            CreatedAt = e.CreatedAt,
+                            UpdatedAt = e.UpdatedAt,
+                            CreatedBy = e.CreatedBy,
+                            UpdatedBy = e.UpdatedBy
+                        };
+
+                        return await MapAndEnrichAsync(paged, Conv, formId, cancellationToken).ConfigureAwait(false);
+                    }
+
+                case "life insurance":
+                    {
+                        Expression<Func<LifeInsuranceFormDataValues, bool>> predicate;
+                        if (clientId.HasValue) { var cid = clientId.Value; predicate = f => f.FormId == formId && f.ClientId == cid; }
+                        else predicate = f => f.FormId == formId;
+
+                        Expression<Func<LifeInsuranceFormDataValues, DateTime>>? orderBy = f => f.UpdatedAt ?? f.CreatedAt;
+
+                        var paged = await _lifeRepo.GetPagedAsync(predicate, pageNumber, pageSize, orderBy, ascending, cancellationToken)
+                                                   .ConfigureAwait(false);
+
+                        FormDataValueReadResponseDto Conv(LifeInsuranceFormDataValues e) => new FormDataValueReadResponseDto
+                        {
+                            Id = e.Id,
+                            TransactionId = e.TransactionId?.ToString(),
+                            ClientId = e.ClientId,
+                            FormId = e.FormId,
+                            SectionId = e.SectionId,
+                            FieldId = e.FieldId,
+                            DataValue = e.DataValue,
+                            Active = e.Active,
+                            IsDraft = e.IsDraft,
+                            CreatedAt = e.CreatedAt,
+                            UpdatedAt = e.UpdatedAt,
+                            CreatedBy = e.CreatedBy,
+                            UpdatedBy = e.UpdatedBy
+                        };
+
+                        return await MapAndEnrichAsync(paged, Conv, formId, cancellationToken).ConfigureAwait(false);
+                    }
+
+                // Repeat for Crop, Property, Travel, Health, Marine similarly...
+                default:
+                    return new PaginatedResult<FormDataValueReadResponseDto>
+                    {
+                        Items = Array.Empty<FormDataValueReadResponseDto>(),
+                        TotalCount = 0,
+                        PageNumber = pageNumber,
+                        PageSize = pageSize,
+                        TotalPages = 0
+                    };
+            }
         }
     }
-
 }

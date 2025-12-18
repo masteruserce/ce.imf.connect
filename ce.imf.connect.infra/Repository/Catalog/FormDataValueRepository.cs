@@ -50,6 +50,13 @@ namespace ce.imf.connect.infra.Repository.Catalog
                 await _db.SaveChangesAsync();
             }
         }
+        public async Task<List<FormDataValue>> AddRangeAsync(List<FormDataValue> entity)
+        {
+                await _db.FormDataValues.AddRangeAsync(entity);
+                await _db.SaveChangesAsync();
+                return entity;
+
+        }
     }
 
 }

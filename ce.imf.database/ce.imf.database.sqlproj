@@ -57,32 +57,23 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
-    <Folder Include="PostDeploymentScript" />
-    <Folder Include="archived" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\FieldsConfig.sql" />
     <Build Include="Tables\Clients.sql" />
     <Build Include="Tables\Forms.sql" />
     <Build Include="Tables\Sections.sql" />
-    <Build Include="archived\BaseDetails.sql" />
-    <Build Include="archived\Customer.sql" />
-    <Build Include="archived\FiftyBcDetails.sql" />
-    <Build Include="archived\GstDetails.sql" />
-    <Build Include="archived\InsuranceCategory.sql" />
-    <Build Include="archived\InsuranceProduct.sql" />
-    <Build Include="archived\OtherAmountDetails.sql" />
-    <Build Include="archived\PayoutDetails.sql" />
-    <Build Include="archived\PcDetails.sql" />
-    <Build Include="archived\PlanPremiumDetails.sql" />
-    <Build Include="archived\PolicyLoginDetails.sql" />
-    <Build Include="archived\RevenueDetails.sql" />
-    <Build Include="archived\TotalDetails.sql" />
-    <Build Include="archived\FinalDetails.sql" />
-    <Build Include="archived\SourcingDetails.sql" />
     <Build Include="Tables\FormDataValues.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <PostDeploy Include="PostDeploymentScript\Script.PostDeploym.InsuranceCategory.sql" />
+    <Build Include="Tables\UserMenu.sql" />
+    <Build Include="Tables\ClientUser.sql" />
+    <Build Include="Tables\PostalCodes.sql" />
+    <Build Include="Tables\AutoInsuranceFormDataValues.sql" />
+    <Build Include="Tables\TravelInsuranceFormDataValues.sql" />
+    <Build Include="Tables\CommercialInsuranceFormDataValues.sql" />
+    <Build Include="Tables\LifeInsuranceFormDataValues.sql" />
+    <Build Include="Tables\CropInsuranceFormDataValues.sql" />
+    <Build Include="Tables\PropertyInsuranceFormDataValues.sql" />
+    <Build Include="Tables\MarineInsuranceFormDataValues.sql" />
+    <Build Include="Tables\HealthInsuranceFormDataValues.sql" />
   </ItemGroup>
 </Project>

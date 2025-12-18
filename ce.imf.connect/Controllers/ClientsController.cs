@@ -17,6 +17,11 @@ namespace ce.imf.connect.Controllers
         }
 
         [HttpGet]
+        [Route("test")]
+        public async Task<ActionResult<string>> GetTest()
+           => Ok("it works");
+
+        [HttpGet]
         public async Task<ActionResult<ImfResponse<List<ClientDto>>>> GetAll()
             => Ok(await _service.GetAllAsync());
 
