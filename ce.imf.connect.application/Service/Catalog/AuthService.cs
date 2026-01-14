@@ -14,15 +14,17 @@ namespace ce.imf.connect.application.Service.Catalog
     public class AuthService: IAuthService 
     {
         private readonly IClientRepository _clientRepository;
-        public AuthService(IClientRepository clientRepository)
+        private readonly IUserRepository _userRepository;
+        public AuthService(IClientRepository clientRepository, IUserRepository userRepository)
         {
                 _clientRepository = clientRepository;
+            _userRepository = userRepository;
         }
         public async Task<ImfResponse<AuthResponse>> AuthenticateAsync(AuthRequest request)
         {
-            var client = await _clientRepository.GetByUsernameAsync(request.UserName);
+            var user = await  _userRepository.GetByUserNameAsync(request.UserName);
 
-            if (client == null || !HashHelper.VerifyPassword(request.Password, client.UserPassword))
+            if (user == null || !HashHelper.VerifyPassword(request.Password, user.PasswordHash))
             {
                 return new ImfResponse<AuthResponse>(
                     new List<ImfErrors> { new ImfErrors { Code = "401", Details = "Invalid credentials" } },
@@ -30,22 +32,24 @@ namespace ce.imf.connect.application.Service.Catalog
                 );
             }
 
-            if (!client.IsActive) // ✅ check if client is active
+            if (!user.Active) // ✅ check if client is active
             {
                 return new ImfResponse<AuthResponse>(
                     new List<ImfErrors> { new ImfErrors { Code = "403", Details = "Inactive client" } },
-                    "Client is not active"
+                    "User is not active"
                 );
             }
 
             // 🔑 Use client’s hashed password as signing key
-            var (token, expiry) = JwtHelper.GenerateToken(client.ClientId, client.UserName, client.UserPassword);
+            var (token, expiry) = JwtHelper.GenerateToken(user.ClientId, user.UserName, user.PasswordHash);
 
             var response = new AuthResponse
             {
-                ClientId = client.ClientId,
+                ClientId = user.ClientId,
                 Token = token,
-                Expiry = expiry
+                Expiry = expiry,
+                UserType = user.Role,
+                UserName = user.UserName
             };
 
             return new ImfResponse<AuthResponse>(response, "Authentication successful");

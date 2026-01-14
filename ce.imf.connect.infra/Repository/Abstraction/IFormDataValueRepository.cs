@@ -10,6 +10,7 @@ namespace ce.imf.connect.infra.Repository.Abstraction
         Task UpdateAsync(FormDataValue entity);
         Task ActivateAsync(Guid id);
         Task DeactivateAsync(Guid id);
+        Task<List<FormDataValue>> AddRangeAsync(List<FormDataValue> entity);
     }
 
 }

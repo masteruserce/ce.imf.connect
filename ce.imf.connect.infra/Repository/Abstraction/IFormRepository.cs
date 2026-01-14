@@ -15,6 +15,7 @@ namespace ce.imf.connect.infra.Repository.Abstraction
         Task<IEnumerable<FieldConfig>> UpdateFieldConfigsAsync(IEnumerable<FieldConfig> fields);
         Task<List<Form>> GetFormByClientIdAsync(Guid? clientId);
         Task<Form?> GetFormIncludingEntities(Guid? clientId, string formName);
+        Task<Form?> GetFormById(Guid formid);
         Task SaveChangesAsync();
     }
 }

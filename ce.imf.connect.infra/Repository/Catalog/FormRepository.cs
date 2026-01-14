@@ -82,5 +82,10 @@ namespace ce.imf.connect.infra.Repository.Catalog
         {
             await _db.SaveChangesAsync();
         }
+
+        public Task<Form?> GetFormById(Guid formId)
+        {
+            return _db.Forms.FirstOrDefaultAsync(f => f.Id == formId);
+        }
     }
 }

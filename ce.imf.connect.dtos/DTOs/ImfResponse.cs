@@ -19,6 +19,11 @@
             public T Data { get; set; } = default!; // Fix for CS8618: Ensure Data is initialized.
 
             /// <summary>
+            /// The actual response data (generic type).
+            /// </summary>
+            public T MasterData { get; set; } = default!; // Fix for CS8618: Ensure Data is initialized.
+
+            /// <summary>
             /// Additional message (success or failure details).
             /// </summary>
             public string Message { get; set; } = string.Empty; // Fix for CS8618: Ensure Message is initialized.

@@ -169,7 +169,7 @@ namespace ce.imf.connect.application.Service.Catalog
 
             // ✅ Update form details
             existingForm.FormName = formDto.FormName;
-
+            var newSections = new List<Section>();
             // ✅ Update Sections
             foreach (var secDto in formDto.Sections)
             {
@@ -177,7 +177,7 @@ namespace ce.imf.connect.application.Service.Catalog
                 if (existingSection == null)
                 {
                     // Add new section
-                    existingForm.Sections.Add(new Section
+                    newSections.Add(new Section
                     {
                         Id = Guid.NewGuid(),
                         ClientId = clientId,
@@ -206,14 +206,14 @@ namespace ce.imf.connect.application.Service.Catalog
                     // Update section
                     existingSection.SectionName = secDto.SectionName;
                     existingSection.DisplayOrder = secDto.DisplayOrder;
-
+                    var newFields = new List<FieldConfig>();
                     // ✅ Update Fields
                     foreach (var fieldDto in secDto.Fields)
                     {
                         var existingField = existingSection.Fields.FirstOrDefault(f => f.FieldName == fieldDto.FieldName);
                         if (existingField == null)
                         {
-                            existingSection.Fields.Add(new FieldConfig
+                            newFields.Add(new FieldConfig
                             {
                                 Id = Guid.NewGuid(),
                                 SectionId = existingSection.Id,
@@ -228,6 +228,7 @@ namespace ce.imf.connect.application.Service.Catalog
                                 ValidationMessage = fieldDto.ValidationMessage ?? "",
                                 DefaultValue = fieldDto.DefaultValue ?? ""
                             });
+                            
                         }
                         else
                         {
@@ -242,7 +243,18 @@ namespace ce.imf.connect.application.Service.Catalog
                             existingField.DefaultValue = fieldDto.DefaultValue ?? "";
                         }
                     }
+                    if (newFields.Count != 0)
+                    {
+                        await _repo.AddFieldConfigsAsync(newFields);
+                        secDto.Fields.AddRange(newFields.Select(f => f.ToDto()));
+                    }
                 }
+            }
+
+            if (newSections.Count != 0)
+            {
+                await _repo.AddSectionsAsync(newSections);
+                existingForm.Sections.ToList().AddRange(newSections);
             }
 
             // Save updates
