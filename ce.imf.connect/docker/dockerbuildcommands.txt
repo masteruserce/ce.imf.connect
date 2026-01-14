@@ -1,0 +1,3 @@
+docker build --no-cache --platform=linux/amd64 -f ce.imf.connect\ce.imf.connect\docker\Dockerfile -t ce-imf-connect .
+
+docker run --rm -p 8080:8080 ce-imf-connect
