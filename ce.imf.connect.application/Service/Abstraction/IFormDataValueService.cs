@@ -17,7 +17,7 @@ namespace ce.imf.connect.application.Service.Abstraction
         Task<ImfResponse<bool>> DeactivateAsync(Guid id);
         Task<ImfResponse<List<FormDataValueDto>>> GetByFormAsync(Guid formId, Guid? clientId);
         //Task<ImfResponse<IEnumerable<FormDataValueDto>>> Submit(IEnumerable<FormDataValueDto> dto);
-        Task<PaginatedResult<FormDataValueReadResponseDto>> GetByFormPagedAsync(
+        Task<PaginatedResult<TransactionGridDto>> GetByFormPagedAsync(
           Guid formId,
           Guid? clientId,
           int pageNumber,

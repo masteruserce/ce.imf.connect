@@ -64,7 +64,10 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IFormDataValueService, FormDataValueService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPostalCodeService, PostalCodeService>();
-
+builder.Services.AddScoped<IWorkflowTemplateService, WorkflowTemplateService>();
+builder.Services.AddScoped<IWorkflowService, WorkflowService>();
+builder.Services.AddScoped<IWorkflowExecutionRepository, WorkflowExecutionRepository>();
+builder.Services.AddScoped<IWorkflowTemplateRepository, WorkflowTemplateRepository>();
 builder.Services.AddAuthorization(); // Add default authorization services
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<JwtHelper>();

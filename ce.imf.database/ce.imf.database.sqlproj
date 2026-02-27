@@ -76,4 +76,7 @@
     <Build Include="Tables\MarineInsuranceFormDataValues.sql" />
     <Build Include="Tables\HealthInsuranceFormDataValues.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Tables\Workflows.sql" />
+  </ItemGroup>
 </Project>
