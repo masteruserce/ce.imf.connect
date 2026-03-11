@@ -114,7 +114,7 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Enable Swagger UI only in development
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
