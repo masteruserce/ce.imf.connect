@@ -75,6 +75,17 @@ builder.Services.AddScoped<JwtHelper>();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
     {
+        options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                if (context.HttpContext.Request.Method == "OPTIONS")
+                {
+                    context.NoResult();
+                }
+                return Task.CompletedTask;
+            }
+        };
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -115,12 +126,13 @@ var app = builder.Build();
 
 // Enable Swagger UI only in development
 //if (app.Environment.IsDevelopment())
-{
+
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 
 app.UseHttpsRedirection(); // Redirect HTTP to HTTPS
+app.UseRouting();
 app.UseCors("crmApp");
 app.UseAuthentication();  // Apply authentication middleware
 app.UseAuthorization();   // Apply authorization middleware
