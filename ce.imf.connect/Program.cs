@@ -36,12 +36,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("crmApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            policy.AllowAnyOrigin()
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
 });
-
 
 builder.Services.AddScoped<IFormRepository, FormRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
