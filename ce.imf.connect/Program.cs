@@ -36,7 +36,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("crmApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            policy.WithOrigins("http://localhost:4200", "https://cognitivecrm-production.up.railway.app")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
