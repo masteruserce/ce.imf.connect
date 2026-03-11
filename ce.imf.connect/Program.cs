@@ -121,8 +121,8 @@ var app = builder.Build();
 }
 
 app.UseHttpsRedirection(); // Redirect HTTP to HTTPS
+app.UseCors("crmApp");
 app.UseAuthentication();  // Apply authentication middleware
 app.UseAuthorization();   // Apply authorization middleware
 app.MapControllers();     // Map controller routes
-app.UseCors("crmApp");
 app.Run();
